@@ -1,0 +1,26 @@
+{
+  "name": "buffalos",
+  "version": "0.1.0",
+  "description": "brainfuck os",
+  "keywords": [
+    "brainfuck"
+  ],
+  "homepage": "https://github.com/Milk-Cool/buffalos#readme",
+  "bugs": {
+    "url": "https://github.com/Milk-Cool/buffalos/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Milk-Cool/buffalos.git"
+  },
+  "license": "MIT",
+  "author": "Milk_Cool",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build": "node build.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6"
+  }
+}

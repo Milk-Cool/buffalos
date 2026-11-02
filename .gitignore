@@ -147,3 +147,9 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Lockfile
+package-lock.json
+
+# OS image
+buffalos.bf
