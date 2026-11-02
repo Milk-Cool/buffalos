@@ -2,12 +2,13 @@
 
 4096 bytes are needed. behavior with less ram is undefined, wrapping is not necessary.
 
-128 programs are supported. More could be used by tweaking the parameters in `build.ts`, but at most 255 could be supported.
+127 programs are supported. more could be used by tweaking the parameters in `build.ts`, but at most 255 could be supported. however, programs may overwrite the stack to exit the main thread.
 
 ## main table
 |size (bytes)|function|
 |-|-|
-|128*16|program index|
+|127*16|program index|
+|16|reserved by OS (at least 2B)|
 |7*32|stack|
 |32|build metadata|
 |7*256|working memory|
@@ -17,7 +18,7 @@
 |-|-|
 |16|program name #1 (string, null-padded)|
 |16|program name #2|
-|126*16|etc...|
+|125*16|etc...|
 
 ## stack
 |size (bytes)|function|
