@@ -12,7 +12,7 @@ const WRAM_SIZE = 7;
 
 const BUILD_METADATA = "buffalos vdev";
 
-const POP = `${"[-]>".repeat(STACK_ITEM_SIZE)}${`[-${"<".repeat(STACK_ITEM_SIZE)}+${">".repeat(STACK_ITEM_SIZE)}]>`.repeat(STACK_ITEM_SIZE * (STACK_SIZE - 1))}${"[-]>".repeat(WRAM_ITEM_SIZE)}${`[-${"<".repeat(WRAM_ITEM_SIZE)}+${">".repeat(WRAM_ITEM_SIZE)}]>`.repeat(WRAM_ITEM_SIZE * (WRAM_SIZE - 1)).slice(0, -1)}${"<".repeat(WRAM_ITEM_SIZE * WRAM_SIZE + STACK_ITEM_SIZE * STACK_SIZE - 1)}`;
+const POP = `${"[-]>".repeat(STACK_ITEM_SIZE)}${`[-${"<".repeat(STACK_ITEM_SIZE)}+${">".repeat(STACK_ITEM_SIZE)}]>`.repeat(STACK_ITEM_SIZE * (STACK_SIZE - 1))}${">".repeat(BUILD_METADATA_SIZE)}${"[-]>".repeat(WRAM_ITEM_SIZE)}${`[-${"<".repeat(WRAM_ITEM_SIZE)}+${">".repeat(WRAM_ITEM_SIZE)}]>`.repeat(WRAM_ITEM_SIZE * (WRAM_SIZE - 1)).slice(0, -1)}${"<".repeat(WRAM_ITEM_SIZE * WRAM_SIZE + STACK_ITEM_SIZE * STACK_SIZE - 1)}`;
 
 // TODO: could be optimized, e. g. w/ 56 (7*8, not 7*7+7)
 function safeWriteByteAndMoveRight(value: number) {
@@ -43,15 +43,15 @@ function buildRaw(progmem: Progmem, entry: string, cmdline: string, metadata: st
 
     // build metadata
     image += ">".repeat((STACK_SIZE - 1) * STACK_ITEM_SIZE);
-    image += safeWriteBytesAndMoveRight(Buffer.from(BUILD_METADATA, "utf-8"));
+    image += safeWriteBytesAndMoveRight(Buffer.from(metadata, "utf-8"));
 
     // shift back to stack item 1
     image += "<".repeat(STACK_SIZE * STACK_ITEM_SIZE + BUILD_METADATA.length);
 
     // main "thread", here's where the magic happens
-    image += `+[-<[>${POP}<-]>${progmem.map(x => `<+>[-<[-]<+>>]<<[->>+<<]>><[-${">".repeat(STACK_ITEM_SIZE * STACK_SIZE + BUILD_METADATA_SIZE + 1)}${x[1]}[${"<".repeat(STACK_ITEM_SIZE * STACK_SIZE + BUILD_METADATA_SIZE + 1)}+${">".repeat(STACK_ITEM_SIZE * STACK_SIZE + BUILD_METADATA_SIZE + 1)}[-]]${"<".repeat(STACK_ITEM_SIZE * STACK_SIZE + BUILD_METADATA_SIZE + 1)}]>-`)}${"+".repeat(progmem.length)}+]`;
+    image += `+[-<<<[>>>${POP}<<<-]>>>${progmem.map(x => `<+>[-<[-]<+>>]<<[->>+<<]>><[-${">".repeat(STACK_ITEM_SIZE * STACK_SIZE + BUILD_METADATA_SIZE + 1)}${x[1]}[${"<".repeat(STACK_ITEM_SIZE * STACK_SIZE + BUILD_METADATA_SIZE + 3)}+${">".repeat(STACK_ITEM_SIZE * STACK_SIZE + BUILD_METADATA_SIZE + 3)}[-]]${"<".repeat(STACK_ITEM_SIZE * STACK_SIZE + BUILD_METADATA_SIZE + 1)}]>-`).join("")}${"+".repeat(progmem.length)}+]`;
 
     return brainfuckFilter(image);
 }
 
-fs.writeFileSync("buffalos.bf", buildRaw(fs.readdirSync("disk").map(x => [x, fs.readFileSync(join("disk", x), "utf-8")]), "hello.bf", ""));
+fs.writeFileSync("buffalos.bf", buildRaw(fs.readdirSync("disk").map(x => [x, fs.readFileSync(join("disk", x), "utf-8")]), "shell.bf", ""));

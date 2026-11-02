@@ -8,7 +8,7 @@
 |size (bytes)|function|
 |-|-|
 |127*16|program index|
-|16|reserved by OS (at least 2B)|
+|16|reserved by OS (at least 3B)|
 |7*32|stack|
 |32|build metadata|
 |7*256|working memory|
