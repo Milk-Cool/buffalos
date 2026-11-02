@@ -13,4 +13,7 @@ function safeWriteByteAndMoveRight(value: number) {
 function safeWriteBytesAndMoveRight(buf: Buffer) {
     return [...buf].map(safeWriteByteAndMoveRight).join("");
 }
-console.log(safeWriteBytesAndMoveRight(Buffer.from("Hello World!")) + "<<<<<<<<<<<<[.>]");
+
+function brainfuckFilter(code: string) {
+    return code.replace(/[^\[\]+\-<>.,]/g, "");
+}
