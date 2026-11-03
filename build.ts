@@ -54,4 +54,4 @@ function buildRaw(progmem: Progmem, entry: string, cmdline: string, metadata: st
     return brainfuckFilter(image);
 }
 
-fs.writeFileSync("buffalos.bf", buildRaw(fs.readdirSync("disk").map(x => [x, fs.readFileSync(join("disk", x), "utf-8")]), "list.bf", ""));
+fs.writeFileSync("buffalos.bf", buildRaw(fs.readdirSync("disk").map(x => [x, fs.readFileSync(join("disk", x), "utf-8")]), "shell.bf", ""));
